@@ -1,0 +1,27 @@
+:root {
+    --color-purple: #3E2669;
+    --color-violet: #5C4E9A;
+    --color-pink: #E71F76;
+}
+
+body {
+    background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+  
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    
+}
+  
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 100px;
+}
+  
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

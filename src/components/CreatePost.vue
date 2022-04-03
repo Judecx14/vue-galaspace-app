@@ -1,5 +1,4 @@
 <template>
-        <h3>Crear Publicación</h3>
         <div id="create-post">
             <form>
                 <div class="d-flex justify-content-around mb-2 align-items-center">
@@ -16,7 +15,7 @@
                             <PhotographIcon id="icon"></PhotographIcon>
                         </label>
                         <input v-on:change="onImageSelect" type="file" class="d-none" name="image-input" id="image-input" accept="image/png, image/jpeg">
-                        <button id="btn-post" v-on:click="createPost">Publicar</button> 
+                        <button id="btn-post" v-on:click="createPost">Share</button> 
                     </div>     
                 </div>
             </form>
@@ -42,20 +41,10 @@ export default {
        }
     },
     methods:{
-        onImageSelect(e){
-            this.file = e.target.files[0]
-            this.image = URL.createObjectURL(e.target.files[0]);
-        },
-        deleteImage(){
-            this.image = "";
-        },
-        createPost: async function() {
-            const formData = new FormData()
-            formData.append('user', this.name)
-            formData.append('user_picture', this.profilePicture)
-            formData.append('photo', this.file, this.file.name)
-            formData.append('body', this.content)
-            await axios.post('http://127.0.0.1:3333/post', formData)
+        updatePost: async function() {
+            const updateData = new FormData()
+            updateData.append('body', this.content)
+            await axios.put('https://galaspace-api-default-rtdb.firebaseio.com/posts.json', updateData)
             .then(response => {
                 console.log(response);
             })
@@ -70,20 +59,19 @@ export default {
     }
     #create-post{
         width: 100%;
-        border-radius: 15px;
+        border-radius: 10px;
         padding: 15px;
-        box-shadow: 0px 0px 15px rgb(173, 173, 173);
-        margin-block: 17.5px;
-
+        box-shadow: 0px 0px 10px rgba(51, 51, 51, 0.2);
+        margin-bottom: 18px;
     }
     #profile-picture{
-        width: 75px;
-        height: 75px;
+        width: 50px;
+        height: 50px;
         object-fit: cover;
         border-radius: 100px;
     }
     #text-input{
-        border: 1px solid gray;
+        border: 1px solid rgb(196, 196, 196);
         height: 45px;
         width: 80%;
         border-radius: 100px;
@@ -98,27 +86,28 @@ export default {
         border-radius: 15px;
     }
     #btn-post{
-        border: 2px solid #E71F76;
+        border: 2px solid var(--color-pink);
         border-radius: 25px;
         background: transparent;
-        color: #E71F76;
-        padding-inline: 30px;
+        color: var(--color-pink);
+        padding-inline: 20px;
         margin-left: 10px;
+        transition: 0.25s;
     }
     #btn-post:hover{
-        background-color: #E71F76;
+        background-color: var(--color-pink);
         color: white;
     }
     #btn-select-img{
         background-color: transparent;
-        color: #E71F76;
+        color: var(--color-pink);
         width: 40px;
         height: 40px;
         cursor: pointer;
     }
     #btn-remove-img{
         background-color: transparent;
-        color: #E71F76;
+        color: var(--color-pink);
         width: 40px;
         height: 40px;
         cursor: pointer;

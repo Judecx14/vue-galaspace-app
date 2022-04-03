@@ -1,14 +1,14 @@
 <template>
-  <start></start>
+  <Main></Main>
 </template>
 
 <script>
-import Start from './components/Start.vue'
+import Main from './components/Main.vue'
 
 export default {
   name: 'App',
   components: {
-    Start
+    Main
   }
 }
 </script>
