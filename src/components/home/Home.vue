@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import Navbar from './Navbar.vue'
-import Search from './Search.vue'
+import Navbar from '../Navbar.vue'
+import Search from '../Search.vue'
 import CreatePost from './CreatePost.vue'
 import Posts from './Posts.vue'
-import Contacts from './Contacts.vue'
+import Contacts from '../Contacts.vue'
 export default {
     name: 'Main',
     components: {

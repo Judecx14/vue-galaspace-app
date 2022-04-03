@@ -1,29 +1,23 @@
 <template>
-  <div id="signup-container" class="mt-1">
-    <h1>Registrate</h1>
-    <input type="text" v-model="fullname" placeholder="Nombre" />
-    <span v-if="v$.fullname.$error">
-      {{ v$.fullname.$errors[0].$message }}
-    </span>
+  <div id="login-container" class="mt-1">
+    <img class="mx-auto d-block d-lg-none" src="../../assets/logo.png" alt="logo">
+    <h1>Login</h1>
     <input type="text" v-model="email" placeholder="Email" />
     <span v-if="v$.email.$error">
       {{ v$.email.$errors[0].$message }}
     </span>
-    <input type="password" v-model="password" placeholder="Contraseña" />
+    <input type="password" v-model="password" placeholder="Password" />
     <span v-if="v$.password.$error">
       {{ v$.password.$errors[0].$message }}
     </span>
-    <input type="password" v-model="confirmPassword" placeholder="Confirmar contraseña" />
-    <span v-if="v$.confirmPassword.$error">
-      {{ v$.confirmPassword.$errors[0].$message }}
-    </span>
-    <button type="submit" id="btn-signup" @click="submitForm">
-      Iniciar Sesión
-    </button>
-    <small>Al registrate aceptas nuestros terminos y condiciones</small>
-    <br />
     <p class="text-center m-3">
-      <a href="#" class="mx-auto">¿Ya tienes Cuenta?</a>
+      <a href="#" class="mx-auto">Did you forget your password?</a>
+    </p>
+    <button type="submit" id="btn-signup" @click="submitForm">
+      Login
+    </button>
+    <p class="text-center m-3">
+      <router-link :to="{ name: 'SignUp' }" class="mx-auto">Sign In</router-link>
     </p>
   </div>
 </template>
@@ -38,7 +32,7 @@ import {
   helpers,
 } from "@vuelidate/validators";
 export default {
-  name: "signup",
+  name: "FormLogin",
   setup() {
     return {
       v$: useVuelidate(),
@@ -55,23 +49,23 @@ export default {
   validations() {
     return {
       fullname: {
-        required: helpers.withMessage("*El nombre es requerido", required),
+        required: helpers.withMessage("*The name is required", required),
       },
       email: {
-        required: helpers.withMessage("*El email es requerido", required),
-        email: helpers.withMessage("*Correo no valido", email),
+        required: helpers.withMessage("*The email is required", required),
+        email: helpers.withMessage("*Email is not valid", email),
       },
       password: {
-        required: helpers.withMessage("*La contraseña es requerida", required),
+        required: helpers.withMessage("*The password is required", required),
         minLength: helpers.withMessage(
-          "*La contraseña debe ser de 8 caracteres",
+          "*Password must be 8 characters",
           minLength(8)
         ),
       },
       confirmPassword: {
-        required: helpers.withMessage("*Se debe confirmar la contraseña", required),
+        required: helpers.withMessage("*Password must be confirmed", required),
         sameAs: helpers.withMessage(
-            "*Las contraseñas no conciden", 
+            "*Passwords do not match", 
             sameAs(this.password)
         ),
       },
@@ -86,8 +80,8 @@ export default {
 </script>
 
 <style scoped>
-    #signup-container {
-        width: 50%;
+    #login-container {
+        width: 100%;
     }
     h1 {
         color: #452f75;

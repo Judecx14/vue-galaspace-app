@@ -41,6 +41,13 @@ export default {
        }
     },
     methods:{
+        onImageSelect(e) {
+            this.file = e.target.files[0]
+            this.image = URL.createObjectURL(e.target.files[0])
+        },
+        deleteImage() {
+            this.image = ""
+        },
         updatePost: async function() {
             const updateData = new FormData()
             updateData.append('body', this.content)
