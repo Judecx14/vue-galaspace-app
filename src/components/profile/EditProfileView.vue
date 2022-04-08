@@ -6,10 +6,8 @@
             <Search></Search>
         </div>
         <div class="col-lg-6 offset-lg-3">
-            <p id="title-create-publication">Share a publication</p>
-            <CreatePost></CreatePost>
-            <p id="title-create-publication">Feed</p>
-            <Posts :is-mine="showPost"></Posts>
+            <p id="title-create-publication">Edit Profile</p>
+            <EditProfile></EditProfile>
         </div>
         <div class="col-lg-3 d-none d-lg-block fixed offset-lg-9">
             <p id="subtitle">Contacts</p>
@@ -21,22 +19,15 @@
 <script>
 import Navbar from '../Navbar.vue'
 import Search from '../Search.vue'
-import CreatePost from './CreatePost.vue'
-import Posts from './Posts.vue'
 import Contacts from '../Contacts.vue'
+import EditProfile from './EditProfile.vue'
 export default {
-    name: 'Home',
-    data() {
-        return {
-            showPost: false
-        }
-    },
+    name: 'ProfileView',
     components: {
         Navbar,
         Search,
-        CreatePost,
-        Posts,
         Contacts,
+        EditProfile,
     }
 }
 </script>

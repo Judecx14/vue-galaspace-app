@@ -1,6 +1,8 @@
 <template>
-        <h3>Editar Perfil</h3>
         <div id="container-data" class="text-center">
+            <router-link class="d-block text-start color: " :to="{ name: 'Profile' }">
+                <ArrowCircleLeftIcon class="icon-back"></ArrowCircleLeftIcon>
+            </router-link>
             <img v-bind:src="profile_image">
             <br>
             <label id="change-image" for="profile-photo-input">
@@ -12,27 +14,34 @@
             <br>
             <input type="text" name="name" id="name" v-model="name">
             <br>
-            <div class="d-flex justify-content-end">
-                <button id="save" v-on:click="save">Guardar</button>
+            <div class="d-flex justify-content-center">
+                <button id="save" v-on:click="updateProfile">Guardar</button>
             </div>
         </div>
 </template>
 
 <script>
-import { PencilAltIcon } from '@heroicons/vue/outline'
+import { PencilAltIcon, ArrowCircleLeftIcon } from '@heroicons/vue/outline'
 import axios from 'axios'
+import { getAuth, updateProfile  } from "firebase/auth";
+import { useRouter } from 'vue-router';
 export default {
     name: 'start',
     components: {
-        PencilAltIcon
+        PencilAltIcon,
+        ArrowCircleLeftIcon
     },
     data (){
         return{ 
-            id: "fZxef4V4P03I51qDwbyd",
             file: null,
-            profile_image: "https://los40es00.epimg.net/los40/imagenes/2021/01/26/musica/1611651861_307195_1611652561_gigante_normal.jpg",
-            name: "Billie Eilish"
+            profile_image: "",
+            name: "",
+            imageURL: "",
+            router: useRouter()
        }
+    },
+    mounted() {
+            this.getProfile()
     },
     methods:{
         onImageSelect(e){
@@ -43,31 +52,56 @@ export default {
         deleteFoto(){
             this.profile_image = "";
         },
-        save: async function() {
-            const formData = new FormData()
-            formData.append('photo', this.file, this.file.name)
-            formData.append('name', this.name)
-            await axios.post("http://localhost:3333/users/fZxef4V4P03I51qDwbyd", formData)
-            .then(response => {
-                console.log(response.data);
-            })   
+        getProfile(){
+            const auth = getAuth();
+            const user = auth.currentUser;
+            if (user !== null) {
+                const displayName = user.displayName;
+                const photoURL = user.photoURL;
+                this.name = displayName;
+                this.profile_image = photoURL;
+                console.log(this.name)
+                console.log(this.photo)
+                const uid = user.uid;
+                this.id = uid
+            }
+        },
+        updateProfile(){
+            const image = new FormData()
+            image.append('file', this.file)
+            //this.v$.$validate();
+            axios.post('https://api.cloudinary.com/v1_1/djldaixtk/image/upload?upload_preset=pcuhg6au', image)
+                .then(response => {
+                    this.imageURL = response.data.secure_url
+                    console.log(this.imageURL)
+                    const auth = getAuth();
+                    updateProfile(auth.currentUser,{
+                    displayName: this.name, photoURL: this.imageURL
+                    }).then(() => {
+                        this.router.push("/profile")
+                    }).catch((error) => {
+                        console.log(error)
+                    });
+                })
         }
     }
 }
 </script>
 
 <style scoped>
-
+    .icon-back{
+        color: var(--color-pink);
+        width: 35px;
+    }
     h3{
         color: #452f75;
     }
 
     #container-data{
         width: 100%;
-        box-shadow: 0px 0px 15px rgb(170, 170, 170);
+        box-shadow: 0px 0px 10px rgba(51, 51, 51, 0.2);        
         border-radius: 15px;
-        padding: 15px;
-        margin-block: 35px;
+        padding: 10px;
     }
     img{
         margin-top: 20px;
@@ -102,6 +136,15 @@ export default {
         margin-left: 10px;
         margin-bottom: 50px;
     }
+    a{
+        text-decoration: none !important;
+    }
+    .no-deco{
+        text-decoration: none !important;
+    }
+    router-link a{
+    text-decoration: none !important;
+}
     #name:focus{
         outline: none;
     }
@@ -110,7 +153,7 @@ export default {
         color: #E71F76;
         border-radius: 50px;
         padding-inline: 30px;
-        padding-block: 10px;
+        padding-block: 5px;
         border: 2px solid #E71F76;
         transition: 0.35s;
         margin-bottom: 20px;

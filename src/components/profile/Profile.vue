@@ -5,33 +5,39 @@
             <p id="name">{{name}}</p>
         </strong>
         <div class="d-flex justify-content-center">
-            <button id="btn-edit" class="d-flex align-items-center btn-profile px-5 justify-content-between">
+            <router-link style="text-decoration: none;" :to="{ name: 'EditProfile' }" id="btn-edit" class="d-flex align-items-center btn-profile px-5 justify-content-between">
                 Edit <PencilAltIcon class="icon-size-profile"></PencilAltIcon>
-            </button>
+            </router-link>
             <button id="btn-logout" class="btn-profile" v-on:click="logout">
                 <LogoutIcon class="icon-size-profile"></LogoutIcon>
             </button>
         </div>
         <div class="d-flex justify-content-center mt-5">
-            <button class="me-3 btnTab" v-bind:class="{ btnBorderBottom: showPosts }">
+            <button class="me-3 btnTab" v-bind:class="{ btnBorderBottom: showPosts }" v-on:click="changeShowPosts">
                 Posts
             </button>
-            <button class="ms-3 btnTab" v-bind:class="{ btnBorderBottom: showFriends }">
+            <button class="ms-3 btnTab" v-bind:class="{ btnBorderBottom: showFriends }" v-on:click="changeShowFriends">
                 Friends List
             </button>
         </div>
     </div>
+    <Posts v-if="showPosts" :is-mine="showPosts"></Posts>
+    <Friends v-if="showFriends" class="mt-3"></Friends>
 </template>
 
 <script>
     import { PencilAltIcon, LogoutIcon } from '@heroicons/vue/outline'
     import { useRouter } from 'vue-router'
     import { getAuth, signOut } from "firebase/auth";
+    import Friends from "../friends/FriendsList.vue"
+    import Posts from "../home/Posts.vue"
     export default {
         name: 'Profile ',
         components: {
             PencilAltIcon,
-            LogoutIcon
+            LogoutIcon,
+            Friends,
+            Posts,
         },
         data() {
             return {
@@ -52,7 +58,6 @@
                 this.router.push("/");
             },
             getProfile(){
-                console.log("HOLA SOY GET PROFILE");
                 const auth = getAuth();
                 const user = auth.currentUser;
                 if (user !== null) {
@@ -69,7 +74,15 @@
                     // you have one. Use User.getToken() instead.
                     //const uid = user.uid;
                 }
-            }
+            },
+            changeShowPosts() {
+                this.showPosts = true
+                this.showFriends = false;
+            },
+            changeShowFriends() {
+                this.showFriends = true
+                this.showPosts = false;
+            },
         }
     }
 </script>

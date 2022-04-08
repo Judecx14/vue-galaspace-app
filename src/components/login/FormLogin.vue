@@ -1,7 +1,7 @@
 <template>
   <div id="login-container" class="mt-1">
     <img class="mx-auto d-block d-lg-none" src="../../assets/logo.png" alt="logo">
-    <h1>Login</h1>
+    <h1 class="animate__animated animate__bounce">Login</h1>
     <input type="text" v-model="email" placeholder="Email" />
     <span v-if="v$.email.$error">
       {{ v$.email.$errors[0].$message }}
@@ -11,9 +11,9 @@
       {{ v$.password.$errors[0].$message }}
     </span>
     <p class="text-center" id="error-message" v-if="errMsg">{{ errMsg }}</p>
-    <p class="text-center m-3">
+    <!-- <p class="text-center m-3">
       <a href="#" class="mx-auto">Did you forget your password?</a>
-    </p>
+    </p> -->
     <button type="submit" id="btn-signup" @click="login">
       Login
     </button>
@@ -65,7 +65,7 @@ export default {
   },
   methods: {
     login() {
-      //this.v$.$validate();
+      this.v$.$validate();
       const auth = getAuth();
       signInWithEmailAndPassword(auth, this.email, this.password)
         .then((userCredential) => {

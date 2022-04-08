@@ -1,6 +1,5 @@
 <template>
         <div id="create-post">
-            <form>
                 <div class="d-flex justify-content-around mb-2 align-items-center">
                     <img id="profile-picture" v-bind:src="profilePicture">
                     <input type="text" id="text-input" v-model="content">
@@ -18,12 +17,12 @@
                         <button id="btn-post" v-on:click="createPost">Share</button> 
                     </div>     
                 </div>
-            </form>
         </div>
 </template>
 
 <script>
 import { PhotographIcon, XIcon } from '@heroicons/vue/outline'
+import { getAuth } from "firebase/auth";
 import axios from 'axios'
 export default {
     name: 'CreatePost',
@@ -33,12 +32,16 @@ export default {
     },
     data (){
         return{ 
-            profilePicture: "https://media.vogue.mx/photos/61aa21a7e654317d15422bed/2:3/w_1600,c_limit/1351801585",
+            profilePicture: "",
             content: "",
             image: "",
-            name: "Billie Eilish",
+            //name: "",
+            id: 0,
             file: null,
        }
+    },
+    mounted() {
+            this.getProfile()
     },
     methods:{
         onImageSelect(e) {
@@ -50,14 +53,33 @@ export default {
         },
         createPost: async function() {
             const formData = new FormData()
-            formData.append('user', this.content)
-            formData.append('user_picture', this.content)
-            formData.append('photo', this.file)
+            formData.append('user_id', this.name)
+            formData.append('user_photo', this.profilePicture)
+            formData.append('image', this.file)
             formData.append('body', this.content)
-            await axios.post('https://galaspace-api-default-rtdb.firebaseio.com/posts.json', formData)
+            await axios.post('http://192.168.14.8:3333/posts', formData)
             .then(response => {
                 console.log(response);
+                this.deleteImage()
+                this.content = ""
+            }).catch(error =>{
+                console.log(error)
+                this.deleteImage()
+                this.content = ""
             })
+        },
+        getProfile(){
+            const auth = getAuth();
+            const user = auth.currentUser;
+            if (user !== null) {
+                const displayName = user.displayName;
+                const photoURL = user.photoURL;
+                const uid = user.uid;
+                this.name = displayName;
+                this.profilePicture = photoURL;
+                this.id = uid
+                
+            }
         }
     }
 }

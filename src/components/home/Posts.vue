@@ -4,10 +4,10 @@
             <div id="post" v-for="post in posts" v-bind:key="post">
                 <picture class="d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center">
-                        <img id="profile-photo" v-bind:src="post.profileImage" alt="profile-picture">
-                        <p class="mt-3" id="name">{{post.name}}</p>
+                        <img id="profile-photo" v-bind:src="post.user_photo" alt="profile-picture">
+                        <p class="mt-3" id="name">{{post.author}}</p>
                     </div>
-                    <div class="dropdown">
+                    <div class="dropdown" v-if="isMine">
                         <button id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                             <DotsCircleHorizontalIcon class="icon-dropdown"/>
                         </button>
@@ -20,24 +20,24 @@
                             </li>
                             <li>
                                 <button class="dropdown-item">
-                                    <MinusCircleIcon style="height: 20px; width: 20px" v-on:click="deletePost"/>
+                                    <MinusCircleIcon style="height: 20px; width: 20px"/>
                                     Delete
                                 </button>
                             </li>
                         </ul>
                     </div>
                 </picture>
-                <img id="body-img" v-bind:src="post.bodyImage" alt="">
+                <img id="body-img" v-bind:src="post.image" alt="">
                 <p class="p-3"> 
                     {{ post.body}}
                 </p>
-                <div class="d-flex justify-content-between px-3 pb-3">                    
+                <!-- <div class="d-flex justify-content-between px-3 pb-3">                    
                     <button class="btn-custom">Comments {{post.qtyComments}}</button>
                         <button class="btn-custom" id="btn-icon">
                             <HeartIcon></HeartIcon>
                         </button>
  
-                </div>
+                </div> -->
             </div>
         </section>
     </div>
@@ -45,13 +45,20 @@
 
 <script>
 import axios from 'axios'
-import { HeartIcon, MinusCircleIcon, PencilAltIcon, DotsCircleHorizontalIcon } from '@heroicons/vue/outline'
+//import { getAuth } from "firebase/auth";
+import { MinusCircleIcon, PencilAltIcon, DotsCircleHorizontalIcon } from '@heroicons/vue/outline'
 export default {
     name: 'Posts',
-    components: { HeartIcon, MinusCircleIcon, PencilAltIcon, DotsCircleHorizontalIcon },
+    components: { MinusCircleIcon, PencilAltIcon, DotsCircleHorizontalIcon },
+    props: {
+        isMine: Boolean
+    },
     data (){
         return{
-            posts: []    
+            posts: [],
+            id: "",
+            name: "",
+            profilePicture: ""    
         }
     },
     mounted(){ 
@@ -59,11 +66,11 @@ export default {
     },
     methods: {
         getPosts: async function(){
-            await axios.get('https://galaspace-api-default-rtdb.firebaseio.com/posts.json')
+            await axios.get('http://192.168.14.8:3333/posts')
             .then(response => {
                 this.posts = response.data
             })
-        }
+        },
     }
 }
 </script>

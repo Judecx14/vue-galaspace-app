@@ -1,7 +1,7 @@
 <template>
   <div id="signup-container" class="mt-1">
     <img class="mx-auto d-block d-lg-none" src="../../assets/logo.png" alt="logo">
-    <h1>Sign Up</h1>
+    <h1 class="animate__animated animate__bounce">Sign Up</h1>
     <UserCircleIcon class="icon-user-image mx-auto d-block" v-if="!image"></UserCircleIcon>
     <img id="user-image" v-bind:src="image" v-if="image" class="d-block mx-auto">
     <label class="text-center d-block" for="image-input" id="label-image">
@@ -103,7 +103,7 @@ export default {
     signUp() {
       const image = new FormData()
       image.append('file', this.file)
-      //this.v$.$validate();
+      this.v$.$validate();
       axios.post('https://api.cloudinary.com/v1_1/djldaixtk/image/upload?upload_preset=pcuhg6au', image)
         .then(response => {
             this.imageURL = response.data.secure_url

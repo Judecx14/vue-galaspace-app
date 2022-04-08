@@ -14,7 +14,7 @@
                 </li>
                 <li>
                     <router-link :to="{ name: 'Home' }">
-                        <img src="../assets/img/navbar/logo.png" alt="logo" id="logo">
+                        <img src="../assets/img/navbar/logo.png" alt="logo" id="logo" class="animate__animated animate__rubberBand">
                     </router-link>
                 </li>
                 <li>

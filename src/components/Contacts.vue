@@ -4,6 +4,22 @@
             <img class="profile-photo ms-1 me-3" src="https://media.vogue.es/photos/624103b0d16dfa60cb8c4282/2:3/w_1600,c_limit/GettyImages-1388065805.jpg" alt="profile-photo">
             <p class="mt-3">Billie Eilish</p>
         </picture>
+        <picture class="d-flex align-items-center">
+            <img class="profile-photo ms-1 me-3" src="https://media.vogue.es/photos/624103b0d16dfa60cb8c4282/2:3/w_1600,c_limit/GettyImages-1388065805.jpg" alt="profile-photo">
+            <p class="mt-3">Billie Eilish</p>
+        </picture>
+        <picture class="d-flex align-items-center">
+            <img class="profile-photo ms-1 me-3" src="https://media.vogue.es/photos/624103b0d16dfa60cb8c4282/2:3/w_1600,c_limit/GettyImages-1388065805.jpg" alt="profile-photo">
+            <p class="mt-3">Billie Eilish</p>
+        </picture>
+        <picture class="d-flex align-items-center">
+            <img class="profile-photo ms-1 me-3" src="https://media.vogue.es/photos/624103b0d16dfa60cb8c4282/2:3/w_1600,c_limit/GettyImages-1388065805.jpg" alt="profile-photo">
+            <p class="mt-3">Billie Eilish</p>
+        </picture>
+        <picture class="d-flex align-items-center">
+            <img class="profile-photo ms-1 me-3" src="https://media.vogue.es/photos/624103b0d16dfa60cb8c4282/2:3/w_1600,c_limit/GettyImages-1388065805.jpg" alt="profile-photo">
+            <p class="mt-3">Billie Eilish</p>
+        </picture>
     </div>
 </template>
 
