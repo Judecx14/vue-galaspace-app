@@ -48,10 +48,13 @@ export default {
         deleteImage() {
             this.image = ""
         },
-        updatePost: async function() {
-            const updateData = new FormData()
-            updateData.append('body', this.content)
-            await axios.put('https://galaspace-api-default-rtdb.firebaseio.com/posts.json', updateData)
+        createPost: async function() {
+            const formData = new FormData()
+            formData.append('user', this.content)
+            formData.append('user_picture', this.content)
+            formData.append('photo', this.file)
+            formData.append('body', this.content)
+            await axios.post('https://galaspace-api-default-rtdb.firebaseio.com/posts.json', formData)
             .then(response => {
                 console.log(response);
             })
@@ -93,7 +96,8 @@ export default {
         border-radius: 15px;
     }
     #btn-post{
-        border: 2px solid var(--color-pink);
+        width: 100px;
+        border: 1px solid var(--color-pink);
         border-radius: 25px;
         background: transparent;
         color: var(--color-pink);

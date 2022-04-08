@@ -3,29 +3,29 @@
         <nav class="px-5 py-1">
             <ul class="d-flex justify-content-between align-items-center">
                 <li>
-                    <a href="">
+                    <router-link :to="{ name: 'Profile' }">
                         <UserCircleIcon class="icon-size color-purple scale-animation"></UserCircleIcon>
-                    </a>
+                    </router-link>
                 </li>
                 <li>
-                    <a href="">
+                    <router-link :to="{ name: 'Friends' }">
                         <UserGroupIcon class="icon-size color-purple scale-animation"></UserGroupIcon>
-                    </a>
+                    </router-link>
                 </li>
                 <li>
-                    <a href="">
+                    <router-link :to="{ name: 'Home' }">
                         <img src="../assets/img/navbar/logo.png" alt="logo" id="logo">
-                    </a>
+                    </router-link>
                 </li>
                 <li>
-                    <a href="">
+                    <router-link :to="{ name: '' }">
                         <ChatAlt2Icon class="icon-size color-purple scale-animation"></ChatAlt2Icon>
-                    </a>
+                    </router-link>
                 </li>
                 <li>
-                    <a href="">
+                    <router-link :to="{ name: '' }">
                         <HeartIcon class="icon-size color-purple scale-animation"></HeartIcon>
-                    </a>
+                    </router-link>
                 </li>
             </ul>
         </nav>

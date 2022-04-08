@@ -10,10 +10,11 @@
     <span v-if="v$.password.$error">
       {{ v$.password.$errors[0].$message }}
     </span>
+    <p class="text-center" id="error-message" v-if="errMsg">{{ errMsg }}</p>
     <p class="text-center m-3">
       <a href="#" class="mx-auto">Did you forget your password?</a>
     </p>
-    <button type="submit" id="btn-signup" @click="submitForm">
+    <button type="submit" id="btn-signup" @click="login">
       Login
     </button>
     <p class="text-center m-3">
@@ -28,9 +29,10 @@ import {
   required,
   email,
   minLength,
-  sameAs,
   helpers,
 } from "@vuelidate/validators";
+import { useRouter } from 'vue-router'
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 export default {
   name: "FormLogin",
   setup() {
@@ -40,17 +42,14 @@ export default {
   },
   data() {
     return {
-      fullname: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      router: useRouter(),
+      errMsg: "",      
     };
   },
   validations() {
     return {
-      fullname: {
-        required: helpers.withMessage("*The name is required", required),
-      },
       email: {
         required: helpers.withMessage("*The email is required", required),
         email: helpers.withMessage("*Email is not valid", email),
@@ -61,19 +60,41 @@ export default {
           "*Password must be 8 characters",
           minLength(8)
         ),
-      },
-      confirmPassword: {
-        required: helpers.withMessage("*Password must be confirmed", required),
-        sameAs: helpers.withMessage(
-            "*Passwords do not match", 
-            sameAs(this.password)
-        ),
-      },
+      }
     };
   },
   methods: {
-    submitForm() {
-      this.v$.$validate();
+    login() {
+      //this.v$.$validate();
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, this.email, this.password)
+        .then((userCredential) => {
+          // Signed in
+          this.router.push("/home");
+          const user = userCredential.userr
+          console.log(user)
+          // ...
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode);
+          console.log(errorMessage);
+          switch (errorCode) {
+          case 'auth/invalid-email':
+              this.errMsg = 'Invalid email'
+              break
+          case 'auth/user-not-found':
+              this.errMsg = 'No account with that email was found'
+              break
+          case 'auth/wrong-password':
+              this.errMsg = 'Incorrect password'
+              break
+          default:
+              this.errMsg = 'Email or password was incorrect'
+              break
+        }
+        });
     },
   },
 };
@@ -126,5 +147,8 @@ export default {
         color: #5c4e9a;
         font-size: 12px;
         margin-left: 15px;
+    }
+    #error-message{
+      color: rgb(226, 66, 66);
     }
 </style>

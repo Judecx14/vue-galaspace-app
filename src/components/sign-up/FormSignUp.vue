@@ -2,6 +2,12 @@
   <div id="signup-container" class="mt-1">
     <img class="mx-auto d-block d-lg-none" src="../../assets/logo.png" alt="logo">
     <h1>Sign Up</h1>
+    <UserCircleIcon class="icon-user-image mx-auto d-block" v-if="!image"></UserCircleIcon>
+    <img id="user-image" v-bind:src="image" v-if="image" class="d-block mx-auto">
+    <label class="text-center d-block" for="image-input" id="label-image">
+      Seleccionar imagen de perfil
+    </label>
+    <input v-on:change="onImageSelect" type="file" class="d-none" name="image-input" id="image-input" accept="image/png, image/jpeg">
     <input type="text" v-model="fullname" placeholder="Name" />
     <span v-if="v$.fullname.$error">
       {{ v$.fullname.$errors[0].$message }}
@@ -18,7 +24,7 @@
     <span v-if="v$.confirmPassword.$error">
       {{ v$.confirmPassword.$errors[0].$message }}
     </span>
-    <button type="submit" id="btn-signup" @click="submitForm">
+    <button type="submit" id="btn-signup" @click="signUp">
       Sign Up
     </button>
     <small>*By registering you accept our terms and conditions</small>
@@ -31,6 +37,7 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
+import { UserCircleIcon } from '@heroicons/vue/outline'
 import {
   required,
   email,
@@ -38,6 +45,9 @@ import {
   sameAs,
   helpers,
 } from "@vuelidate/validators";
+import { useRouter } from 'vue-router';
+import axios from 'axios'
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 export default {
   name: "FormLogin",
   setup() {
@@ -51,7 +61,14 @@ export default {
       email: "",
       password: "",
       confirmPassword: "",
+      router: useRouter(),
+      image: "",
+      imageURL: "",
+      file: null
     };
+  },
+  components: {
+    UserCircleIcon,
   },
   validations() {
     return {
@@ -79,8 +96,41 @@ export default {
     };
   },
   methods: {
-    submitForm() {
-      this.v$.$validate();
+    onImageSelect(e) {
+            this.file = e.target.files[0]
+            this.image = URL.createObjectURL(e.target.files[0])
+    },
+    signUp() {
+      const image = new FormData()
+      image.append('file', this.file)
+      //this.v$.$validate();
+      axios.post('https://api.cloudinary.com/v1_1/djldaixtk/image/upload?upload_preset=pcuhg6au', image)
+        .then(response => {
+            this.imageURL = response.data.secure_url
+            console.log(this.imageURL)
+            const auth = getAuth();
+            createUserWithEmailAndPassword(auth, this.email, this.password)
+              .then((userCredential) => {
+                // Signed in
+                this.router.push("/home");
+                const user = userCredential.user;
+                updateProfile(
+                  auth.currentUser,
+                  {
+                    displayName: this.fullname,
+                    photoURL: this.imageURL
+                  }
+                )
+                console.log(user)
+              })
+              .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                console.log(errorCode);
+                console.log(errorMessage);
+                // ..
+              });
+        })
     },
   },
 };
@@ -133,5 +183,20 @@ export default {
         color: #5c4e9a;
         font-size: 12px;
         margin-left: 15px;
+    }
+    .icon-user-image{
+      height: 125px;
+      width: 125px;
+      color: #a7a7a7;
+    }
+    #label-image{
+      cursor: pointer;
+      color: #a7a7a7;
+    }
+    #user-image{
+      width: 125px;
+      height: 125px;
+      object-fit: cover;
+      border-radius: 100px;
     }
 </style>

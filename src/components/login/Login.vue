@@ -26,7 +26,10 @@
         name: 'Login',
         components: {
             FormLogin,
-        }
+        },
+        mounted() {
+      console.log(this.$store.state.count); // this.$store
+    }
     }
 </script>
 
