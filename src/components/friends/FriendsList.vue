@@ -1,15 +1,14 @@
 <template>
     <div id="container-friend-list">
         <section>
-            <h3>Lista de Amigos</h3>
             <table>
                 <tr v-for="friend in friends" v-bind:key="friend">
-                    <td style="width: 150px;">
-                        <img v-bind:src="friend.photo" alt="profile-photo">
+                    <td style="width: 80px;">
+                        <img id="friend-photo" v-bind:src="friend.photo" alt="profile-photo">
                     </td>
-                    <td><p>{{friend.name}}</p></td>
+                    <td><p class="mt-3">{{friend.name}}</p></td>
                     <td style="text-align: end;">
-                        <button>
+                        <button id="trash-icon">
                             <TrashIcon></TrashIcon>
                         </button>
                     </td>
@@ -42,48 +41,42 @@ export default {
 <style scope>
     #container-friend-list{
         width: 100%;
-        min-height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
     }
-    h3{
-        color: #452f75;
-    }
     section{
-        width: 65%;
+        width: 100%;
     }
     table{
-        margin-top: 15px;
         width: 100%;
-        border-radius: 15px;
+        border-radius: 10px;
         box-shadow: 0px 0px 10px rgb(187, 187, 187);
     }
     td{
         padding: 15px;
         text-align: start;
     }
-    img{
-        width: 100px;
-        height: 100px;
+    #friend-photo{
+        width: 50px;
+        height: 50px;
         object-fit: cover;
         aspect-ratio: 1/1;
         border-radius: 100px;
     }
     p{
-        font-size: 20px;
         color: rgb(92, 92, 92);
     }
-    button{
+    #trash-icon{
         background: transparent;
         border: none;
-        width: 45px;
-        height: 45px;
+        width: 35px;
+        height: 35px;
         color: rgb(92, 92, 92);
         transition: 0.25s;
     }
-    button:hover{
-        color: rgb(243, 83, 190);
+    #trash-icon:hover{
+        color: var(--color-pink);
         transition: 0.25s;
     }
 </style>

@@ -6,10 +6,8 @@
             <Search></Search>
         </div>
         <div class="col-lg-6 offset-lg-3">
-            <p id="title-create-publication">Share a publication</p>
-            <CreatePost></CreatePost>
-            <p id="title-create-publication">Feed</p>
-            <Posts></Posts>
+            <p id="title-create-publication">Friends List</p>
+            <FriendsList></FriendsList>
         </div>
         <div class="col-lg-3 d-none d-lg-block fixed offset-lg-9">
             <p id="subtitle">Contacts</p>
@@ -19,19 +17,17 @@
 </template>
 
 <script>
-import Navbar from './Navbar.vue'
-import Search from './Search.vue'
-import CreatePost from './CreatePost.vue'
-import Posts from './Posts.vue'
-import Contacts from './Contacts.vue'
+import Navbar from '../Navbar.vue'
+import Search from '../Search.vue'
+import Contacts from '../Contacts.vue'
+import FriendsList from './FriendsList.vue'
 export default {
-    name: 'Main',
+    name: 'Friends',
     components: {
         Navbar,
         Search,
-        CreatePost,
-        Posts,
         Contacts,
+        FriendsList,
     }
 }
 </script>
